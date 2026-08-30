@@ -9,8 +9,7 @@ $geminiApiKey   = "AQ.Ab8RN6LdFFcoNX2goXQ6oDI-818XHFXuqqF0WMPEmiAaC4B3WQ";
 $prompt = "اكتب منشوراً تووعوياً ومفيداً لقناة تليجرام في أحد المجالات التالية بصورة متنوّعة: (أمن المعلومات، الأمن السيبراني، حماية الحسابات والأجهزة من الاختراق، نصائح تقنية للحاسب، تقنيات الإنترنت الحديثة). الشروط: لغة عربية سهلة ومشوقة، يحتوي على عنوان ونقاط، رموز تعبيرية (Emojis)، وهاشتاقات في النهاية. لا تذكر أي مقدمات، ابدأ بالمنشور مباشرة.";
 
 // استخدام الموديل الحديث gemini-3.6-flash
-$geminiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=" . trim($geminiApiKey);
-
+$geminiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" . trim($geminiApiKey);
 $geminiData = [
     "contents" => [
         [
