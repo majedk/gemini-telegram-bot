@@ -10,7 +10,7 @@ $prompt = "اكتب منشوراً تووعوياً ومفيداً لقناة ت
 
 $groqUrl = "https://api.groq.com/openai/v1/chat/completions";
 $groqData = [
-    "model" => "llama3-8b-8192",
+    "model" => "llama-3.3-70b-versatile",
     "messages" => [
         [
             "role" => "user",
