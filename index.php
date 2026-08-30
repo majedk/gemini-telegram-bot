@@ -3,9 +3,7 @@ $telegramToken = "8965795554:AAFYuvrHzUg9QHLe3OyeneCvtQp2V9YyTiE";
 $channelId = "@ITIN333";
 $groqApiKey = "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";
 
-$prompt = "اكتب منشوراً تووعوياً ومفيداً لقناة تليجرام في أحد المجالات التالية بصورة متنوّعة: ";
-$prompt .= "(أمن المعلومات، الأمن السيبراني، حماية الحسابات والأجهزة من الاختراق، نصائح تقنية للحاسب، تقنيات الإنترنت الحديثة). ";
-$prompt .= "الشروط: لغة عربية سهلة ومشوقة، يحتوي على عنوان ونقاط، رموز تعبيرية (Emojis)، وهاشتاقات في النهاية. لا تذكر أي مقدمات، ابدأ بالمنشور مباشرة.";
+$prompt = "Write an awareness and useful post for a Telegram channel about cybersecurity, protecting accounts and devices from hacking, or modern internet technologies. Conditions: Easy and engaging Arabic language, include a title, bullet points, emojis, and hashtags at the end. Do not include any introduction, start directly with the post.";
 
 $groqUrl = "https://api.groq.com/openai/v1/chat/completions";
 $groqData = [
