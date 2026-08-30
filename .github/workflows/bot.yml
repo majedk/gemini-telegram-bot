@@ -1,0 +1,22 @@
+name: Run Telegram Gemini Bot
+
+on:
+  schedule:
+    # يعمل كل 8 ساعات تلقائياً
+    - cron: '0 */8 * * *'
+  workflow_dispatch: # زر للتشغيل اليدوي متى ما أردت التجربة
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Run bot script
+        run: php index.php
