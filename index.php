@@ -1,11 +1,8 @@
 <?php
-
-// --- 1. الإعدادات والمفاتيح ---
 $telegramToken = "8965795554:AAFYuvrHzUg9QHLe3OyeneCvtQp2V9YyTiE";
-$channelId     = "@ITIN333";
-$groqApiKey    = "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";
+$channelId = "@ITIN333";
+$groqApiKey = "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";
 
-// --- 2. طلب النص من الذكاء الاصطناعي (Groq API) ---
 $prompt = "اكتب منشوراً تووعوياً ومفيداً لقناة تليجرام في أحد المجالات التالية بصورة متنوّعة: (أمن المعلومات، الأمن السيبراني، حماية الحسابات والأجهزة من الاختراق، نصائح تقنية للحاسب، تقنيات الإنترنت الحديثة). الشروط: لغة عربية سهلة ومشوقة، يحتوي على عنوان ونقاط، رموز تعبيرية (Emojis)، وهاشتاقات في النهاية. لا تذكر أي مقدمات، ابدأ بالمنشور مباشرة.";
 
 $groqUrl = "https://api.groq.com/openai/v1/chat/completions";
@@ -41,12 +38,10 @@ if (!$postText) {
     exit;
 }
 
-// --- 3. إرسال المنشور إلى تليجرام ---
 $telegramUrl = "https://api.telegram.org/bot{$telegramToken}/sendMessage";
-
 $telegramData = [
-    'chat_id'    => $channelId,
-    'text'       => $postText
+    'chat_id' => $channelId,
+    'text' => $postText
 ];
 
 $ch = curl_init();
@@ -66,5 +61,4 @@ if (isset($telegramResult['ok']) && $telegramResult['ok'] === true) {
 } else {
     echo "Telegram Error: " . $telegramResponse;
 }
-
 ?>
