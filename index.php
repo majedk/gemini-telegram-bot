@@ -7,7 +7,7 @@ $prompt = "Write an awareness and useful post for a Telegram channel about cyber
 
 $groqUrl = "https://api.groq.com/openai/v1/chat/completions";
 $groqData = [
-    "model" => "llama-3.3-70b-versatile",
+    "model" => "gemma2-9b-it",
     "messages" => [
         [
             "role" => "user",
