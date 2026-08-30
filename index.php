@@ -3,7 +3,7 @@
 // --- 1. الإعدادات والمفاتيح ---
 $telegramToken = "8965795554:AAFYuvrHzUg9QHLe3OyeneCvtQp2V9YyTiE";
 $channelId     = "@ITIN333";
-$geminiApiKey   = "AQ.Ab8RN6LdFFcoNX2goXQ6oDI-818XHFXuqqF0WMPEmiAaC4B3WQ";
+$geminiApiKey = "AQ.Ab8RN6LKJmls_OkEQnHa1O3uDS75Yz5SQCqZmRhK41NKWSgheA";
 
 // --- 2. طلب النص من الذكاء الاصطناعي (Gemini API) ---
 $prompt = "اكتب منشوراً تووعوياً ومفيداً لقناة تليجرام في أحد المجالات التالية بصورة متنوّعة: (أمن المعلومات، الأمن السيبراني، حماية الحسابات والأجهزة من الاختراق، نصائح تقنية للحاسب، تقنيات الإنترنت الحديثة). الشروط: لغة عربية سهلة ومشوقة، يحتوي على عنوان ونقاط، رموز تعبيرية (Emojis)، وهاشتاقات في النهاية. لا تذكر أي مقدمات، ابدأ بالمنشور مباشرة.";
