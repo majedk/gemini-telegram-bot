@@ -8,7 +8,6 @@ $geminiApiKey   = "AQ.Ab8RN6LdFFcoNX2goXQ6oDI-818XHFXuqqF0WMPEmiAaC4B3WQ";
 // --- 2. طلب النص من الذكاء الاصطناعي (Gemini API) ---
 $prompt = "اكتب منشوراً تووعوياً ومفيداً لقناة تليجرام في أحد المجالات التالية بصورة متنوّعة: (أمن المعلومات، الأمن السيبراني، حماية الحسابات والأجهزة من الاختراق، نصائح تقنية للحاسب، تقنيات الإنترنت الحديثة). الشروط: لغة عربية سهلة ومشوقة، يحتوي على عنوان ونقاط، رموز تعبيرية (Emojis)، وهاشتاقات في النهاية. لا تذكر أي مقدمات، ابدأ بالمنشور مباشرة.";
 
-// استخدام الموديل الحديث gemini-3.6-flash
 $geminiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" . trim($geminiApiKey);
 $geminiData = [
     "contents" => [
@@ -34,30 +33,35 @@ curl_close($ch);
 $geminiResult = json_decode($geminiResponse, true);
 $postText = $geminiResult['candidates'][0]['content']['parts'][0]['text'] ?? null;
 
-// --- 3. إرسال المنشور إلى تليجرام ---
-if ($postText) {
-    $telegramUrl = "https://api.telegram.org/bot{$telegramToken}/sendMessage";
-   
-    $telegramData = [
-        'chat_id'    => $channelId,
-        'text'       => $postText,
-        'parse_mode' => 'Markdown'
-    ];
+if (!$postText) {
+    echo "Error: Gemini did not return text. Response: " . $geminiResponse;
+    exit;
+}
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $telegramUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($telegramData));
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-   
-    $telegramResponse = curl_exec($ch);
-    curl_close($ch);
+// --- 3. إرسال المنشور إلى تليجرام (بدون Markdown لتجنب أخطاء التنسيق) ---
+$telegramUrl = "https://api.telegram.org/bot{$telegramToken}/sendMessage";
 
-    // رد قصير ليتوافق مع كرون جوب
-    echo "OK"; 
+$telegramData = [
+    'chat_id'    => $channelId,
+    'text'       => $postText
+];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $telegramUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($telegramData));
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+$telegramResponse = curl_exec($ch);
+curl_close($ch);
+
+$telegramResult = json_decode($telegramResponse, true);
+
+if (isset($telegramResult['ok']) && $telegramResult['ok'] === true) {
+    echo "SUCCESS_SENT";
 } else {
-    echo "Error";
+    echo "Telegram Error: " . $telegramResponse;
 }
 
 ?>
