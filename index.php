@@ -3,7 +3,29 @@ $telegramToken = "8965795554:AAFYuvrHzUg9QHLe3OyeneCvtQp2V9YyTiE";
 $channelId = "@ITIN333";
 $groqApiKey = "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";
 
-$prompt = "Write an awareness and useful post for a Telegram channel about cybersecurity, protecting accounts and devices from hacking, or modern internet technologies. Conditions: Easy and engaging Arabic language, include a title, bullet points, emojis, and hashtags at the end. Do not include any introduction, start directly with the post.";
+// قائمة شاملة ومختلفة للمواضيع لضمان التنويع الكامل بين كل رسالة وأخرى
+$topicsPool = [
+    "مكونات الحاسوب الأساسية (العتاد والبرمجيات) ومميزاتها",
+    "أنظمة التشغيل المختلفة، إيجابياتها وسلبياتها وطريقة عملها",
+    "مفاهيم الأمن السيبراني: أهميته، أهدافه، وضرورته في العصر الحديث",
+    "أمن المعلومات وحماية البيانات الشخصية والشركات",
+    "شبكات الحاسوب، أنواعها، وكيفية حمايتها من الاختراق",
+    "الذكاء الاصطناعي وتقنيات المستقبل: إيجابياته وسلبياته المحتملة",
+    "التخزين السحابي وتقنيات حفظ البيانات الحديثة"
+];
+
+// اختيار موضوع عشوائي جديد تماماً في كل مرة يتم فيها إرسال رسالة
+$randomTopic = $topicsPool[array_rand($topicsPool)];
+
+$prompt = "اكتب منشوراً تقنياً وتوعوياً جديداً ومختلفاً لقناة تليجرام حول هذا الموضوع المحدد: ($randomTopic).
+الشروط الصارمة:
+- تجنب تكرار المواضيع السابقة واجعل المعلومات جديدة ومفيدة.
+- لغة عربية سهلة، سلسة، وجذابة للقارئ.
+- يتضمن عنواناً رئيسياً معبراً وجذاباً.
+- استخدام نقاط توضيحية (Bullet points) لتنظيم الشرح.
+- استخدام الإيموجي بشكل مناسب وجميل.
+- وضع هاشتاغات دقيقة ومناسبة في النهاية.
+- لا تضع أي مقدمة أو كلام إضافي، وابدأ بالمنشور مباشرة.";
 
 $groqUrl = "https://api.groq.com/openai/v1/chat/completions";
 $groqData = [
