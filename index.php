@@ -1,7 +1,7 @@
 <?php
 $telegramToken = "8965795554:AAFYuvrHzUg9QHLe3OyeneCvtQp2V9YyTiE";
 $channelId = "@ITIN333";
-$groqApiKey = "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";
+$groqApiKey = "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";
 
 // قائمة شاملة ومختلفة للمواضيع لضمان التنويع الكامل بين كل رسالة وأخرى
 $topicsPool = [
