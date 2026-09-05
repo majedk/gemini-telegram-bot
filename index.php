@@ -9,7 +9,7 @@ if (empty($groqApiKey)) {
     die("Error: GROQ_API_KEY is missing. Please set it in GitHub Secrets.");
 }
 
-// قائمة شاملة ومحدثة للمواضيع القيمة والمتنوعة (كما طلبتها سابقاً)
+// قائمة شاملة ومحدثة للمواضيع القيمة والمتنوعة
 $topicsPool = [
     "مكونات الحاسوب الأساسية (العتاد والبرمجيات) ومميزاتها",
     "أنظمة التشغيل المختلفة وإيجابياتها وسلبياتها",
@@ -28,7 +28,7 @@ $topicsPool = [
 // اختيار موضوع عشوائي
 $randomTopic = $topicsPool[array_rand($topicsPool)];
 
-// ملف مؤقت لحفظ آخر نمط تم إرساله لضمان التبادل (طويل / قصير) [الميزة القديمة محفوظة]
+// ملف مؤقت لحفظ آخر نمط تم إرساله لضمان التبادل (طويل / قصير)
 $styleFile = 'last_style.txt';
 $lastStyle = '';
 
@@ -36,22 +36,23 @@ if (file_exists($styleFile)) {
     $lastStyle = trim(file_get_contents($styleFile));
 }
 
-// تبديل النمط بناءً على آخر رسالة أُرسلت [الميزة القديمة محفوظة]
+// تبديل النمط بناءً على آخر رسالة أُرسلت
 if ($lastStyle === 'long') {
     $randomStyle = 'short';
 } else {
     $randomStyle = 'long';
 }
 
-// حفظ النمط الجديد للمرة القادمة [الميزة القديمة محفوظة]
+// حفظ النمط الجديد للمرة القادمة
 file_put_contents($styleFile, $randomStyle);
 
-// بناء الـ Prompt بناءً على النمط المتناوب [الميزة القديمة محفوظة]
+// بناء الـ Prompt بناءً على النمط المتناوب (مع الالتزام بحدود وصف الصورة في تيليجرام)
 if ($randomStyle === "long") {
     $prompt = "اكتب منشوراً تقنياً وتوعوياً شاملاً ومفصلاً لقناة تليجرام حول هذا الموضوع: ($randomTopic).
 الشروط:
+- الطول يجب ألا يتجاوز 900 حرف كحد أقصى لكي يتناسب تماماً مع وصف الصورة في تيليجرام.
 - لغة عربية سهلة وجذابة مع عنوان رئيسي معبر.
-- استخدام نقاط توضيحية (Bullet points) لتنظيم الشرح.
+- استخدام نقاط توضيحية (Bullet points) خفيفة لتنظيم الشرح.
 - استخدام الإيموجي بشكل مناسب وجميل.
 - وضع هاشتاغات دقيقة في النهاية.
 - لا تضع أي مقدمة أو كلام إضافي، وابدأ بالمنشور مباشرة.";
@@ -97,25 +98,22 @@ if (!$postText) {
     exit;
 }
 
-// -------------------------------------------------------------------------
-// الإضافة الجديدة: اختيار صورة احترافية (بروشور/تصميم تقني) وإرفاقها مع النص
-// -------------------------------------------------------------------------
+// مصفوفة الصور الاحترافية (البروشورات التقنية)
 $imagesPool = [
-    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=60", // تقنية وحاسوب
-    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=60", // أمن سيبراني واختراق
-    "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop&q=60", // حماية واحتيال رقمي
-    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop&q=60", // شبكات وتقنية معلومات
-    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=60"  // ذكاء اصطناعي ومستقبل
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=60"
 ];
 $randomImage = $imagesPool[array_rand($imagesPool)];
 
-// استخدام Telegram sendPhoto لإرسال الصورة كبروشور مع النص في نفس الوقت
+// إرسال الصورة مع النص كـ Caption ضمن الحد المسموح به
 $telegramUrl = "https://api.telegram.org/bot{$telegramToken}/sendPhoto";
 $telegramData = [
     'chat_id' => $channelId,
     'photo' => $randomImage,
-    'caption' => $postText, // النص المولد (سواء كان طويلاً أو قصيراً حسب التناوب) يوضع كوصف احترافي تحت الصورة
-    'parse_mode' => 'HTML'
+    'caption' => $postText
 ];
 
 $ch = curl_init();
