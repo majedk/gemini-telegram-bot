@@ -1,7 +1,13 @@
 <?php
 $telegramToken = "8965795554:AAFYuvrHzUg9QHLe3OyeneCvtQp2V9YyTiE";
 $channelId = "@ITIN333";
-$groqApiKey = "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";
+
+// قراءة مفتاح Groq بأمان من متغير البيئة الممرر عبر GitHub Actions
+$groqApiKey = getenv('GROQ_API_KEY');
+
+if (empty($groqApiKey)) {
+    die("Error: GROQ_API_KEY is missing. Please set it in GitHub Secrets.");
+}
 
 // قائمة شاملة ومختلفة للمواضيع لضمان التنويع الكامل بين كل رسالة وأخرى
 $topicsPool = [
