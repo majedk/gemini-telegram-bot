@@ -9,7 +9,7 @@ if (empty($groqApiKey)) {
     die("Error: GROQ_API_KEY is missing. Please set it in GitHub Secrets.");
 }
 
-// قائمة شاملة ومحدثة للمواضيع القيمة والمتنوعة
+// قائمة شاملة ومحدثة للمواضيع القيمة والمتنوعة (كما طلبتها سابقاً)
 $topicsPool = [
     "مكونات الحاسوب الأساسية (العتاد والبرمجيات) ومميزاتها",
     "أنظمة التشغيل المختلفة وإيجابياتها وسلبياتها",
@@ -28,7 +28,7 @@ $topicsPool = [
 // اختيار موضوع عشوائي
 $randomTopic = $topicsPool[array_rand($topicsPool)];
 
-// ملف مؤقت لحفظ آخر نمط تم إرساله لضمان التبادل (طويل / قصير)
+// ملف مؤقت لحفظ آخر نمط تم إرساله لضمان التبادل (طويل / قصير) [الميزة القديمة محفوظة]
 $styleFile = 'last_style.txt';
 $lastStyle = '';
 
@@ -36,17 +36,17 @@ if (file_exists($styleFile)) {
     $lastStyle = trim(file_get_contents($styleFile));
 }
 
-// تبديل النمط بناءً على آخر رسالة أُرسلت
+// تبديل النمط بناءً على آخر رسالة أُرسلت [الميزة القديمة محفوظة]
 if ($lastStyle === 'long') {
     $randomStyle = 'short';
 } else {
     $randomStyle = 'long';
 }
 
-// حفظ النمط الجديد للمرة القادمة
+// حفظ النمط الجديد للمرة القادمة [الميزة القديمة محفوظة]
 file_put_contents($styleFile, $randomStyle);
 
-// بناء الـ Prompt بناءً على النمط المتناوب
+// بناء الـ Prompt بناءً على النمط المتناوب [الميزة القديمة محفوظة]
 if ($randomStyle === "long") {
     $prompt = "اكتب منشوراً تقنياً وتوعوياً شاملاً ومفصلاً لقناة تليجرام حول هذا الموضوع: ($randomTopic).
 الشروط:
@@ -97,10 +97,25 @@ if (!$postText) {
     exit;
 }
 
-$telegramUrl = "https://api.telegram.org/bot{$telegramToken}/sendMessage";
+// -------------------------------------------------------------------------
+// الإضافة الجديدة: اختيار صورة احترافية (بروشور/تصميم تقني) وإرفاقها مع النص
+// -------------------------------------------------------------------------
+$imagesPool = [
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&auto=format&fit=crop&q=60", // تقنية وحاسوب
+    "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=60", // أمن سيبراني واختراق
+    "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop&q=60", // حماية واحتيال رقمي
+    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&auto=format&fit=crop&q=60", // شبكات وتقنية معلومات
+    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=60"  // ذكاء اصطناعي ومستقبل
+];
+$randomImage = $imagesPool[array_rand($imagesPool)];
+
+// استخدام Telegram sendPhoto لإرسال الصورة كبروشور مع النص في نفس الوقت
+$telegramUrl = "https://api.telegram.org/bot{$telegramToken}/sendPhoto";
 $telegramData = [
     'chat_id' => $channelId,
-    'text' => $postText
+    'photo' => $randomImage,
+    'caption' => $postText, // النص المولد (سواء كان طويلاً أو قصيراً حسب التناوب) يوضع كوصف احترافي تحت الصورة
+    'parse_mode' => 'HTML'
 ];
 
 $ch = curl_init();
@@ -116,7 +131,7 @@ curl_close($ch);
 $telegramResult = json_decode($telegramResponse, true);
 
 if (isset($telegramResult['ok']) && $telegramResult['ok'] === true) {
-    echo "SUCCESS_SENT";
+    echo "SUCCESS_SENT_WITH_IMAGE";
 } else {
     echo "Telegram Error: " . $telegramResponse;
 }
